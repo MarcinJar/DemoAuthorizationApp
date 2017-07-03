@@ -22,7 +22,7 @@ namespace DemoAuthorizationWebApi
             {
                 AllowInsecureHttp = true,
                 TokenEndpointPath = new PathString("/Token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(15),
+                AccessTokenExpireTimeSpan = TimeSpan.FromMinutes(30),
                 Provider = provider
             };
             app.UseOAuthAuthorizationServer(OAuthOptions);
