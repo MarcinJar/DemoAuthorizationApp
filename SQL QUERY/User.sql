@@ -1,5 +1,6 @@
 CREATE TABLE [User] (
 	DBKey		INT IDENTITY(1,1),
+	Name		NVARCHAR(200) NOT NULL,
 	Login		NVARCHAR(50) NOT NULL,
 	Password	BINARY(64) NOT NULL,
 	DBKeyRole		INT NOT NULL,
@@ -7,8 +8,8 @@ CREATE TABLE [User] (
 	CONSTRAINT FK_User_Role FOREIGN KEY (DBKeyRole) REFERENCES [Role] (DBKey)
 )
 
---INSERT INTO [User] VALUES('Admin', HASHBYTES('SHA2_512', '12345a'), 1);
---INSERT INTO [User] VALUES('User', HASHBYTES('SHA2_512', '12345u'), 2);
+--INSERT INTO [User] VALUES('Jan Kowalski', 'Admin', HASHBYTES('SHA2_512', '12345a'), 1);
+--INSERT INTO [User] VALUES('Antoni Nowak','User', HASHBYTES('SHA2_512', '12345u'), 2);
 
 SELECT * FROM [User]
 

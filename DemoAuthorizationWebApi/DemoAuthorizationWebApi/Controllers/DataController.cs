@@ -27,7 +27,7 @@ namespace DemoAuthorizationWebApi.Controllers
             return Ok("Hello " + identity.Name);
         }
 
-        [Authorize(Roles="admin")]
+        [Authorize(Roles="Admin")]
         [HttpGet]
         [Route("api/data/authorize")]
         public IHttpActionResult GetForAdmin()

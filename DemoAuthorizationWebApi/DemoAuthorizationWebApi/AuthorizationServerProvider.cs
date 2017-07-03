@@ -5,6 +5,8 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using DemoAuthorizationWebApi.Models;
+using DemoAuthorizationWebApi.Logic;
 
 namespace DemoAuthorizationWebApi
 {
@@ -18,20 +20,16 @@ namespace DemoAuthorizationWebApi
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            if (context.UserName == "admin" && context.Password == "admin")
+            UserLogic userLogic = new UserLogic();
+            User user = userLogic.CheckUser(context.UserName, context.Password);
+
+            if (user.existUser == true)
             {
-                identity.AddClaim(new Claim(ClaimTypes.Role, "admin"));
-                identity.AddClaim(new Claim("username", "admin"));
-                identity.AddClaim(new Claim(ClaimTypes.Name, "Jan Kowalski"));
+                identity.AddClaim(new Claim(ClaimTypes.Role, user.Role));
+                identity.AddClaim(new Claim("username", user.Login));
+                identity.AddClaim(new Claim(ClaimTypes.Name, user.Name));
                 context.Validated(identity);
             } 
-            else if (context.UserName == "user" && context.Password == "user")
-            {
-                identity.AddClaim(new Claim(ClaimTypes.Role, "user"));
-                identity.AddClaim(new Claim("username", "user"));
-                identity.AddClaim(new Claim(ClaimTypes.Name, "Paweł Nowak"));
-                context.Validated(identity);
-            }
             else
             {
                 context.SetError("invalid_grand", "Provided username and password is incorrect");
