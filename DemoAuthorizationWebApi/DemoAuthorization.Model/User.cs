@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace DemoAuthorizationWebApi.Models
+namespace DemoAuthorization.Model
 {
     public class User
     {

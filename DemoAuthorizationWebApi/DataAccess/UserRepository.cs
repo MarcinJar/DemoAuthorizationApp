@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using DemoAuthorizationWebApi.Models;
+using DemoAuthorization.Model;
 using System.Data.SqlClient;
 using Dapper;
 using System.Data;
 using System.Configuration;
+using DataAccess;
 
 namespace DemoAuthorizationWebApi.Repository
 {
-    public class UserRepository : IUserRepository
+    public class UserRepository : BaseRepository, IUserRepository
     {
         public User CheckUser(string login, string password)
         {
             User user = new User();
 
-            using (SqlConnection dbConn = new SqlConnection(ConfigurationManager.ConnectionStrings["DA"].ConnectionString))
+            using (SqlConnection dbConn = new SqlConnection(connection.ConnectionString))
             {
                 try
                 {
@@ -46,6 +47,19 @@ namespace DemoAuthorizationWebApi.Repository
             }
 
             return user;
+        }
+
+        public IEnumerable<RowUser> GetAllUsers()
+        {
+            IEnumerable<RowUser> usersList = null;
+
+            using (SqlConnection dbConn = new SqlConnection(connection.ConnectionString))
+            {
+                dbConn.Open();
+                usersList = dbConn.Query<RowUser>("dbo.getAllUsers", commandType: CommandType.StoredProcedure).ToList();
+            }
+
+            return usersList;
         }
     }
 }

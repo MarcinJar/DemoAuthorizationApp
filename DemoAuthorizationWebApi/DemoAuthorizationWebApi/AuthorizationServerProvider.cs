@@ -5,13 +5,20 @@ using System.Linq;
 using System.Web;
 using System.Threading.Tasks;
 using System.Security.Claims;
-using DemoAuthorizationWebApi.Models;
+using DemoAuthorization.Model;
 using DemoAuthorizationWebApi.Logic;
 
 namespace DemoAuthorizationWebApi
 {
     public class AuthorizationServerProvider : OAuthAuthorizationServerProvider
     {
+        private IUserLogic userLogic;
+
+        public AuthorizationServerProvider(IUserLogic userLogic)
+        {
+            this.userLogic = userLogic;
+        }
+
         public override async Task ValidateClientAuthentication(OAuthValidateClientAuthenticationContext context)
         {
             context.Validated();
@@ -20,8 +27,8 @@ namespace DemoAuthorizationWebApi
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
-            UserLogic userLogic = new UserLogic();
-            User user = userLogic.CheckUser(context.UserName, context.Password);
+
+            User user = this.userLogic.CheckUser(context.UserName, context.Password);
 
             if (user.existUser == true)
             {

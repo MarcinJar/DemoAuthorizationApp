@@ -1,14 +1,16 @@
-﻿using DemoAuthorizationWebApi.Models;
+﻿using DemoAuthorization.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoAuthorizationWebApi.Logic
+namespace DemoAuthorizationWebApi.Repository
 {
-    public interface IUserLogic
+    public interface IUserRepository
     {
         User CheckUser(string login, string password);
+
+        IEnumerable<RowUser> GetAllUsers();
     }
 }

@@ -4,6 +4,13 @@ using Microsoft.Owin;
 using Owin;
 using Microsoft.Owin.Security.OAuth;
 using System.Web.Http;
+using Ninject;
+using DemoAuthorizationWebApi.Logic;
+using System.Reflection;
+using Ninject.Modules;
+using System.Collections.Generic;
+using DemoAuthorization.DependencyResolver;
+using DemoAuthorizationWebApi.App_Start;
 
 [assembly: OwinStartup(typeof(DemoAuthorizationWebApi.Startup))]
 
@@ -17,7 +24,17 @@ namespace DemoAuthorizationWebApi
             //enable cros orgin requests
             app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
 
-            var provider = new AuthorizationServerProvider();
+            //Ninject.IKernel kernal = new StandardKernel();
+
+            //var modules = new List<INinjectModule>
+            //{
+            //    new NinjectModulD()
+            //};
+            //kernal.Load(modules);
+            IKernel kernel = NinjectWebCommon.GetKelner;
+
+            var provider = kernel.Get<AuthorizationServerProvider>();
+            //var provider = new AuthorizationServerProvider();
             OAuthAuthorizationServerOptions OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 AllowInsecureHttp = true,

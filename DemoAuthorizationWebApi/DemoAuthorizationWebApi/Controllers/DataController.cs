@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DemoAuthorization.Model;
+using DemoAuthorizationWebApi.Logic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,6 +12,13 @@ namespace DemoAuthorizationWebApi.Controllers
 {
     public class DataController : ApiController
     {
+        private IUserLogic userLogic;
+
+        public DataController(IUserLogic userLogic)
+        {
+            this.userLogic = userLogic;
+        }
+
         [AllowAnonymous]
         [HttpGet]
         [Route("api/data/forall")]
@@ -37,6 +46,14 @@ namespace DemoAuthorizationWebApi.Controllers
                         .Where(c => c.Type == ClaimTypes.Role)
                         .Select(c => c.Value);
             return Ok("Hello " + identity.Name + " Role: " + string.Join(",", roles.ToList()));
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("api/data/getallusers")]
+        public IEnumerable<RowUser> GetAllUsers()
+        {
+            return this.userLogic.GetAllUsers();
         }
     }
 }
