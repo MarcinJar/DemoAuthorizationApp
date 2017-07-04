@@ -1,0 +1,7 @@
+CREATE PROCEDURE dbo.getAllUsers
+AS
+BEGIN
+
+	SELECT * FROM DBO.[User]
+
+END
