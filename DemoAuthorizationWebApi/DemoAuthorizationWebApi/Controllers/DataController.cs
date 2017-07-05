@@ -1,5 +1,6 @@
 ﻿using DemoAuthorization.Model;
 using DemoAuthorizationWebApi.Logic;
+using DemoAuthorizationWebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,12 @@ namespace DemoAuthorizationWebApi.Controllers
     public class DataController : ApiController
     {
         private IUserLogic userLogic;
+        private ILogger log;
 
-        public DataController(IUserLogic userLogic)
+        public DataController(IUserLogic userLogic, ILogger log)
         {
             this.userLogic = userLogic;
+            this.log = log;
         }
 
         [AllowAnonymous]
@@ -53,7 +56,10 @@ namespace DemoAuthorizationWebApi.Controllers
         [Route("api/data/getallusers")]
         public IEnumerable<RowUser> GetAllUsers()
         {
-            return this.userLogic.GetAllUsers();
+            IEnumerable<RowUser> rUsers = this.userLogic.GetAllUsers();
+            this.log.Info("get list of users from datatbase");
+
+            return rUsers;
         }
     }
 }

@@ -14,6 +14,8 @@ namespace DemoAuthorizationWebApi.App_Start
     using Ninject.Modules;
     using System.Collections.Generic;
     using DemoAuthorization.DependencyResolver;
+    using Models;
+    using log4net;
 
     public static class NinjectWebCommon 
     {
@@ -67,6 +69,10 @@ namespace DemoAuthorizationWebApi.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            kernel.Bind<ILog>().ToMethod(x => LogManager.GetLogger(x.Request.Target.Member.DeclaringType));
+
+            kernel.Bind<ILogger>().To<MyLogger>().InSingletonScope();
+
             var modules = new List<INinjectModule>
             {
                 new NinjectModulD()
