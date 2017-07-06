@@ -13,6 +13,7 @@ using DemoAuthorization.DependencyResolver;
 using DemoAuthorizationWebApi.App_Start;
 
 [assembly: OwinStartup(typeof(DemoAuthorizationWebApi.Startup))]
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "Web.config", Watch = true)]
 
 namespace DemoAuthorizationWebApi
 {
