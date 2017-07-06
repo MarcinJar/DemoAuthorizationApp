@@ -8,11 +8,19 @@ using Dapper;
 using System.Data;
 using System.Configuration;
 using DataAccess;
+using log4net;
 
 namespace DemoAuthorizationWebApi.Repository
 {
     public class UserRepository : BaseRepository, IUserRepository
     {
+        ILog logger;
+
+        public UserRepository(ILog logger)
+        {
+            this.logger = logger;
+        }
+
         public User CheckUser(string login, string password)
         {
             User user = new User();
@@ -46,6 +54,7 @@ namespace DemoAuthorizationWebApi.Repository
                 }
             }
 
+            this.logger.Info("Log test in repository");
             return user;
         }
 
